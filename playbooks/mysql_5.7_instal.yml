@@ -1,0 +1,18 @@
+- hosts: mysql
+  remote_user: root 
+  tasks:
+    - name: copy resolv.conf file
+      copy: src=/script/file/resolv.conf dest=/etc/
+    - name: copy mysql-5.7 repo file
+      copy: src=/script/file/mysql-community.repo dest=/etc/yum.repos.d/
+    - name: install mysql-5.7
+      yum:  name=mysql-community-server state=latest
+    - name: start mysql
+      service: name=mysqld enabled=yes state=started
+    - name: Initialization mysql password
+      command: mysqladmin -uroot -p`cat /var/log/mysqld.log |grep password|awk '{print $NF}'` password "Wenliang@123"
+
+
+
+
+
